@@ -10,12 +10,20 @@ var list = document.getElementsByClassName('list-group-item')
 console.log(list);
 for(let i=0; i<list.length; i++){
     list[i].style.fontweight="bold";
-    list[i].style.backgroundColor="grey";
+    
 }
 
 var list = document.getElementsByTagName('li')
-console.log(list);
+
 for(let i=0; i<list.length; i++){
     list[i].style.fontweight="bold";
-    list[i].style.backgroundColor="greenyellow";
+    
+}
+document.querySelectorAll('li')[1].style.backgroundColor="green";
+document.querySelectorAll('li')[2].style.display="none";
+document.querySelectorAll('li')[1].style.color="red";
+var odd = document.querySelectorAll('li:nth-child(odd)');
+console.log(odd,"odd-element");
+for(let i=0; i<odd.length; i++){
+    odd[i].style.backgroundColor="greenyellow"
 }
