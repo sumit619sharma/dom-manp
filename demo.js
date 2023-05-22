@@ -12,3 +12,10 @@ for(let i=0; i<list.length; i++){
     list[i].style.fontweight="bold";
     list[i].style.backgroundColor="grey";
 }
+
+var list = document.getElementsByTagName('li')
+console.log(list);
+for(let i=0; i<list.length; i++){
+    list[i].style.fontweight="bold";
+    list[i].style.backgroundColor="greenyellow";
+}
