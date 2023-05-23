@@ -12,11 +12,33 @@ sub.addEventListener("click", (e) => {
     }
     
     
-   var set= localStorage.setItem("userDetail" , JSON.stringify(details))
-    var get  = JSON.parse(localStorage.getItem("userDetail"));
-    console.log(get," working fine");
-    
+    localStorage.setItem( email.value, JSON.stringify(details))
+   
+    email.textContent="";
+    fstname.textContent="";
+    allUser(email.value);
 });
+
+const allUser = (key)=>{
+    
+    // var len = localStorage.length;
+    // for(let i=0; i<len; i++){
+    //     let key = localStorage.key(i);
+    //     let value =JSON.parse(localStorage.getItem(key));
+    //   let parent = document.getElementById('container');
+    //     let divTag = document.createElement('div');
+    // let textNode = document.createTextNode(value.name+" "+value.email);
+    // divTag.appendChild(textNode);
+    // parent.appendChild(divTag);
+    // }
+    
+   let  obj =JSON.parse(localStorage.getItem(key));
+    let parent = document.getElementById('container');
+    let divTag = document.createElement('div');
+let textNode = document.createTextNode(obj.name+" "+obj.email);
+divTag.appendChild(textNode);
+parent.appendChild(divTag);
+}
 
 // sub.addEventListener("mouseover", (e) => {
 //     e.preventDefault();
