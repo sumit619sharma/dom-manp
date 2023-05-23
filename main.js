@@ -5,6 +5,7 @@ sub.addEventListener("click", (e) => {
      // store detail to local-storage******************
     let fstname = document.querySelector("#name");
     let email = document.querySelector("#email");
+    
    // console.log(`${fstname.value} ${email.value}` );
     var details = {
         name: fstname.value,
@@ -13,13 +14,13 @@ sub.addEventListener("click", (e) => {
     
     
     localStorage.setItem( email.value, JSON.stringify(details))
-   
-    email.textContent="";
-    fstname.textContent="";
-    allUser(email.value);
+    allUser(email,fstname);
+
+//     email.value=""
+//    fstname.value=""
 });
 
-const allUser = (key)=>{
+const allUser = (key,fstname)=>{
     
     // var len = localStorage.length;
     // for(let i=0; i<len; i++){
@@ -32,32 +33,40 @@ const allUser = (key)=>{
     // parent.appendChild(divTag);
     // }
     
-   let  obj =JSON.parse(localStorage.getItem(key));
+   let  obj =JSON.parse(localStorage.getItem(key.value));
     let parent = document.getElementById('container');
     let divTag = document.createElement('div');
 let textNode = document.createTextNode(obj.name+" "+obj.email);
 
 var button = document.createElement('input');
 
-// Set the attributes
+// Set the attributes for delete
 button.setAttribute('type', 'button');
 button.setAttribute('value', 'Delete');
-button.setAttribute('onclick',`removeUser(event,'${key}')`);
+button.setAttribute('onclick',`removeUser(event,'${key.value}')`);
+
+var edit = document.createElement('input');
+// Set the attributes for Edit
+edit.setAttribute('type', 'button');
+edit.setAttribute('value', 'Edit');
+edit.setAttribute('onclick',`editUser(event,'${key.value}','${fstname.value}')`);
+
 
 divTag.appendChild(textNode);
 divTag.appendChild(button)
+divTag.appendChild(edit)
 parent.appendChild(divTag);
 
 }
 
 const removeUser=(e,key)=>{
     // delete from ui;
-    console.log("innnnnnnnnnnnnnnnnnnn",key)
+    
     //console.log("eleemnt",e.target.parentNode)
     let child = e.target.parentNode;
     let parent = e.target.parentNode.parentNode;
-    console.log("child",child);
-    console.log("aprent",parent);
+    // console.log("child",child);
+    // console.log("aprent",parent);
     parent.removeChild(child);
 
     // remove from local storage
@@ -65,23 +74,10 @@ const removeUser=(e,key)=>{
     
 }
 
-// sub.addEventListener("mouseover", (e) => {
-//     e.preventDefault();
-
-//     let fstname = document.querySelector("#name");
-//     let email = document.querySelector("#email");
-//     console.log(`${fstname.value} ${email}` );
-//     fstname.innerHTML='<h1>hello</h1>';
+const editUser=(e,key,name)=>{
+    removeUser(e,key);
     
-// });
-
-
-// sub.addEventListener("mouseout", (e) => {
-//     e.preventDefault();
-
-//     let fstname = document.querySelector("#name");
-//     let email = document.querySelector("#email");
-//     console.log(`${fstname.value} ${email}` );
-//     fstname.innerHTML='<h1>hello</h1>';
+     document.querySelector("#name").value=name;
+     document.querySelector("#email").value = key;
     
-// });
+}
