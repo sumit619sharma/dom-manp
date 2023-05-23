@@ -5,7 +5,7 @@ sub.addEventListener("click", (e) => {
      // store detail to local-storage******************
     let fstname = document.querySelector("#name");
     let email = document.querySelector("#email");
-    console.log(`${fstname.value} ${email.value}` );
+   // console.log(`${fstname.value} ${email.value}` );
     var details = {
         name: fstname.value,
         email: email.value
@@ -36,8 +36,33 @@ const allUser = (key)=>{
     let parent = document.getElementById('container');
     let divTag = document.createElement('div');
 let textNode = document.createTextNode(obj.name+" "+obj.email);
+
+var button = document.createElement('input');
+
+// Set the attributes
+button.setAttribute('type', 'button');
+button.setAttribute('value', 'Delete');
+button.setAttribute('onclick',`removeUser(event,'${key}')`);
+
 divTag.appendChild(textNode);
+divTag.appendChild(button)
 parent.appendChild(divTag);
+
+}
+
+const removeUser=(e,key)=>{
+    // delete from ui;
+    console.log("innnnnnnnnnnnnnnnnnnn",key)
+    //console.log("eleemnt",e.target.parentNode)
+    let child = e.target.parentNode;
+    let parent = e.target.parentNode.parentNode;
+    console.log("child",child);
+    console.log("aprent",parent);
+    parent.removeChild(child);
+
+    // remove from local storage
+    localStorage.removeItem(key);
+    
 }
 
 // sub.addEventListener("mouseover", (e) => {
