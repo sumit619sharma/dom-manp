@@ -1,3 +1,23 @@
+window.addEventListener("DOMContentLoaded",()=>{
+    
+  var userArr = [];
+    axios.get('https://crudcrud.com/api/679fa54ca5d24d979a8f532a13c4c25a/personData'
+    ).then((resp)=>{
+        console.log(resp.data);
+  userArr=resp.data;
+  console.log("length",userArr.length)
+  for(let i=0; i<userArr.length; i++){
+      console.log("user",userArr[i]);
+    let obj = userArr[i];
+    allUser(obj.email,obj.name,obj);
+  }
+  
+}).catch((err)=>{
+        console.log(err);
+    })
+    
+})
+
 let sub = document.querySelector(".submit");
 sub.addEventListener("click", (e) => {
     e.preventDefault();
@@ -12,11 +32,11 @@ sub.addEventListener("click", (e) => {
         email: email.value
     }
     
-    axios.post('https://crudcrud.com/api/09a163d56fee4a11b57fc22c5a3ddf23/personData'
+    axios.post('https://crudcrud.com/api/679fa54ca5d24d979a8f532a13c4c25a/personData'
     ,details)
     .then((resp)=>{
         console.log(resp.data);
-        allUser(email,fstname,resp.data)
+        allUser(email.value,fstname.value,resp.data)
     }).catch((err)=>{
         console.log(err);
     })
@@ -51,13 +71,13 @@ var button = document.createElement('input');
 // Set the attributes for delete
 button.setAttribute('type', 'button');
 button.setAttribute('value', 'Delete');
-button.setAttribute('onclick',`removeUser(event,'${key.value}')`);
+button.setAttribute('onclick',`removeUser(event,'${key}')`);
 
 var edit = document.createElement('input');
 // Set the attributes for Edit
 edit.setAttribute('type', 'button');
 edit.setAttribute('value', 'Edit');
-edit.setAttribute('onclick',`editUser(event,'${key.value}','${fstname.value}')`);
+edit.setAttribute('onclick',`editUser(event,'${key}','${fstname}')`);
 
 
 divTag.appendChild(textNode);
