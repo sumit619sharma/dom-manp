@@ -12,15 +12,22 @@ sub.addEventListener("click", (e) => {
         email: email.value
     }
     
-    
-    localStorage.setItem( email.value, JSON.stringify(details))
-    allUser(email,fstname);
+    axios.post('https://crudcrud.com/api/09a163d56fee4a11b57fc22c5a3ddf23/personData'
+    ,details)
+    .then((resp)=>{
+        console.log(resp.data);
+        allUser(email,fstname,resp.data)
+    }).catch((err)=>{
+        console.log(err);
+    })
+   // localStorage.setItem( email.value, JSON.stringify(details))
+    //allUser(email,fstname);
 
 //     email.value=""
 //    fstname.value=""
 });
 
-const allUser = (key,fstname)=>{
+const allUser = (key,fstname,resp)=>{
     
     // var len = localStorage.length;
     // for(let i=0; i<len; i++){
@@ -33,8 +40,9 @@ const allUser = (key,fstname)=>{
     // parent.appendChild(divTag);
     // }
     
-   let  obj =JSON.parse(localStorage.getItem(key.value));
-    let parent = document.getElementById('container');
+   //let  obj =JSON.parse(localStorage.getItem(key.value));
+   let  obj = resp; 
+   let parent = document.getElementById('container');
     let divTag = document.createElement('div');
 let textNode = document.createTextNode(obj.name+" "+obj.email);
 
@@ -81,3 +89,6 @@ const editUser=(e,key,name)=>{
      document.querySelector("#email").value = key;
     
 }
+
+
+
