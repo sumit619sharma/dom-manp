@@ -1,7 +1,7 @@
 window.addEventListener("DOMContentLoaded",()=>{
     
   var userArr = [];
-    axios.get('https://crudcrud.com/api/679fa54ca5d24d979a8f532a13c4c25a/personData'
+    axios.get('https://crudcrud.com/api/91d46831c57f4803a44450464de9a5ea/personData'
     ).then((resp)=>{
         console.log(resp.data);
   userArr=resp.data;
@@ -14,7 +14,7 @@ window.addEventListener("DOMContentLoaded",()=>{
   
 }).catch((err)=>{
         console.log(err);
-    })
+     })
     
 })
 
@@ -32,7 +32,7 @@ sub.addEventListener("click", (e) => {
         email: email.value
     }
     
-    axios.post('https://crudcrud.com/api/679fa54ca5d24d979a8f532a13c4c25a/personData'
+    axios.post('https://crudcrud.com/api/91d46831c57f4803a44450464de9a5ea/personData'
     ,details)
     .then((resp)=>{
         console.log(resp.data);
@@ -62,6 +62,7 @@ const allUser = (key,fstname,resp)=>{
     
    //let  obj =JSON.parse(localStorage.getItem(key.value));
    let  obj = resp; 
+ console.log("object in allUser==", obj);
    let parent = document.getElementById('container');
     let divTag = document.createElement('div');
 let textNode = document.createTextNode(obj.name+" "+obj.email);
@@ -71,7 +72,7 @@ var button = document.createElement('input');
 // Set the attributes for delete
 button.setAttribute('type', 'button');
 button.setAttribute('value', 'Delete');
-button.setAttribute('onclick',`removeUser(event,'${key}')`);
+button.setAttribute('onclick',`removeUser(event,'${JSON.stringify(obj)}')`);
 
 var edit = document.createElement('input');
 // Set the attributes for Edit
@@ -87,9 +88,9 @@ parent.appendChild(divTag);
 
 }
 
-const removeUser=(e,key)=>{
+const removeUser=(e,obj)=>{
     // delete from ui;
-    
+    console.log("object in RemoveUser==",JSON.parse( obj));
     //console.log("eleemnt",e.target.parentNode)
     let child = e.target.parentNode;
     let parent = e.target.parentNode.parentNode;
@@ -98,8 +99,16 @@ const removeUser=(e,key)=>{
     parent.removeChild(child);
 
     // remove from local storage
-    localStorage.removeItem(key);
-    
+   // localStorage.removeItem(key);
+   obj = JSON.parse( obj);
+    let id = obj._id;
+    console.log("id=====",id,obj.name);
+    axios.delete(`https://crudcrud.com/api/91d46831c57f4803a44450464de9a5ea/personData/${id}`)
+    .then((resp)=>{
+        console.log("success Delete", resp);
+    }).catch((err)=>{
+        console.log("not DELETED");
+    })
 }
 
 const editUser=(e,key,name)=>{
