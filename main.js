@@ -1,7 +1,13 @@
+var editClick = {
+    click: false,
+    curObj: {}
+};
+
 window.addEventListener("DOMContentLoaded",()=>{
+    console.log("yes Immmmmmmmmmmmmm  innnnnnnnn======");
     
   var userArr = [];
-    axios.get('https://crudcrud.com/api/91d46831c57f4803a44450464de9a5ea/personData'
+    axios.get('https://crudcrud.com/api/9c781d1f384845de9667ee169cb75739/personData'
     ).then((resp)=>{
         console.log(resp.data);
   userArr=resp.data;
@@ -9,7 +15,7 @@ window.addEventListener("DOMContentLoaded",()=>{
   for(let i=0; i<userArr.length; i++){
       console.log("user",userArr[i]);
     let obj = userArr[i];
-    allUser(obj.email,obj.name,obj);
+    allUser(obj);
   }
   
 }).catch((err)=>{
@@ -31,15 +37,31 @@ sub.addEventListener("click", (e) => {
         name: fstname.value,
         email: email.value
     }
+    if(editClick.click){
+        console.log("inside===",editClick)
+       let obj = editClick.curObj;
+        axios.put(`https://crudcrud.com/api/9c781d1f384845de9667ee169cb75739/personData/${obj._id}`
+        ,details)
+        .then((resp)=>{
+            console.log(resp.data);
+            editClick.click=false;
+            editClick.curObj={};
+            location.reload();
+        }).catch((err)=>{
+            console.log(err);
+        })
+
+    } else{
+        axios.post('https://crudcrud.com/api/9c781d1f384845de9667ee169cb75739/personData'
+        ,details)
+        .then((resp)=>{
+            console.log(resp.data);
+            allUser(resp.data)
+        }).catch((err)=>{
+            console.log(err);
+        })
+    }
     
-    axios.post('https://crudcrud.com/api/91d46831c57f4803a44450464de9a5ea/personData'
-    ,details)
-    .then((resp)=>{
-        console.log(resp.data);
-        allUser(email.value,fstname.value,resp.data)
-    }).catch((err)=>{
-        console.log(err);
-    })
    // localStorage.setItem( email.value, JSON.stringify(details))
     //allUser(email,fstname);
 
@@ -47,7 +69,7 @@ sub.addEventListener("click", (e) => {
 //    fstname.value=""
 });
 
-const allUser = (key,fstname,resp)=>{
+const allUser = (resp)=>{
     
     // var len = localStorage.length;
     // for(let i=0; i<len; i++){
@@ -78,7 +100,7 @@ var edit = document.createElement('input');
 // Set the attributes for Edit
 edit.setAttribute('type', 'button');
 edit.setAttribute('value', 'Edit');
-edit.setAttribute('onclick',`editUser(event,'${key}','${fstname}')`);
+edit.setAttribute('onclick',`editUser(event,'${JSON.stringify(obj)}')`);
 
 
 divTag.appendChild(textNode);
@@ -103,7 +125,7 @@ const removeUser=(e,obj)=>{
    obj = JSON.parse( obj);
     let id = obj._id;
     console.log("id=====",id,obj.name);
-    axios.delete(`https://crudcrud.com/api/91d46831c57f4803a44450464de9a5ea/personData/${id}`)
+    axios.delete(`https://crudcrud.com/api/9c781d1f384845de9667ee169cb75739/personData/${id}`)
     .then((resp)=>{
         console.log("success Delete", resp);
     }).catch((err)=>{
@@ -111,11 +133,19 @@ const removeUser=(e,obj)=>{
     })
 }
 
-const editUser=(e,key,name)=>{
-    removeUser(e,key);
-    
-     document.querySelector("#name").value=name;
-     document.querySelector("#email").value = key;
+const editUser=(e,obj)=>{
+ 
+  //  removeUser(e,obj);
+     obj = JSON.parse( obj);
+
+     // make it Global to handle edit case
+     editClick.click=true;
+     editClick.curObj = obj
+     
+     let id = obj._id;
+    console.log("edit====",obj);
+     document.querySelector("#name").value=obj.name;
+     document.querySelector("#email").value = obj.email;
     
 }
 
