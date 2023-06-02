@@ -37,21 +37,21 @@ sub.addEventListener("click", (e) => {
         name: fstname.value,
         email: email.value
     }
-    if(editClick.click){
-        console.log("inside===",editClick)
-       let obj = editClick.curObj;
-        axios.put(`https://crudcrud.com/api/9c781d1f384845de9667ee169cb75739/personData/${obj._id}`
-        ,details)
-        .then((resp)=>{
-            console.log(resp.data);
-            editClick.click=false;
-            editClick.curObj={};
-            location.reload();
-        }).catch((err)=>{
-            console.log(err);
-        })
+    // if(editClick.click){
+    //     console.log("inside===",editClick)
+    //    let obj = editClick.curObj;
+    //     axios.put(`https://crudcrud.com/api/9c781d1f384845de9667ee169cb75739/personData/${obj._id}`
+    //     ,details)
+    //     .then((resp)=>{
+    //         console.log(resp.data);
+    //         editClick.click=false;
+    //         editClick.curObj={};
+    //         location.reload();
+    //     }).catch((err)=>{
+    //         console.log(err);
+    //     })
 
-    } else{
+    // } else{
         axios.post('https://crudcrud.com/api/9c781d1f384845de9667ee169cb75739/personData'
         ,details)
         .then((resp)=>{
@@ -60,7 +60,7 @@ sub.addEventListener("click", (e) => {
         }).catch((err)=>{
             console.log(err);
         })
-    }
+    //}
     
    // localStorage.setItem( email.value, JSON.stringify(details))
     //allUser(email,fstname);
@@ -135,18 +135,18 @@ const removeUser=(e,obj)=>{
 
 const editUser=(e,obj)=>{
  
-  //  removeUser(e,obj);
-     obj = JSON.parse( obj);
+  
+     let nObj = JSON.parse( obj);
 
-     // make it Global to handle edit case
-     editClick.click=true;
-     editClick.curObj = obj
+    //  // make it Global to handle edit case
+    //  editClick.click=true;
+    //  editClick.curObj = obj
      
-     let id = obj._id;
-    console.log("edit====",obj);
-     document.querySelector("#name").value=obj.name;
-     document.querySelector("#email").value = obj.email;
-    
+     //let id = obj._id;
+    //console.log("edit====",obj);
+     document.querySelector("#name").value=nObj.name;
+     document.querySelector("#email").value = nObj.email;
+     removeUser(e,obj);  
 }
 
 
