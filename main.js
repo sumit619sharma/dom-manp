@@ -1,13 +1,10 @@
-var editClick = {
-    click: false,
-    curObj: {}
-};
+//  maybe i can  create different api for different category 
 
 window.addEventListener("DOMContentLoaded",()=>{
     console.log("yes Immmmmmmmmmmmmm  innnnnnnnn======");
     
   var userArr = [];
-    axios.get('https://crudcrud.com/api/9c781d1f384845de9667ee169cb75739/personData'
+    axios.get('https://crudcrud.com/api/924559f09938462a960cf37340e57272/personData'
     ).then((resp)=>{
         console.log(resp.data);
   userArr=resp.data;
@@ -31,11 +28,13 @@ sub.addEventListener("click", (e) => {
      // store detail to local-storage******************
     let fstname = document.querySelector("#name");
     let email = document.querySelector("#email");
+    let catg = document.querySelector("#myDropdown");
     
    // console.log(`${fstname.value} ${email.value}` );
     var details = {
         name: fstname.value,
-        email: email.value
+        email: email.value,
+        category: catg.value,
     }
     // if(editClick.click){
     //     console.log("inside===",editClick)
@@ -52,11 +51,14 @@ sub.addEventListener("click", (e) => {
     //     })
 
     // } else{
-        axios.post('https://crudcrud.com/api/9c781d1f384845de9667ee169cb75739/personData'
+        axios.post('https://crudcrud.com/api/924559f09938462a960cf37340e57272/personData'
         ,details)
         .then((resp)=>{
             console.log(resp.data);
             allUser(resp.data)
+            email.value=""
+            fstname.value=""
+            catg.value="Electronic"
         }).catch((err)=>{
             console.log(err);
         })
@@ -65,8 +67,7 @@ sub.addEventListener("click", (e) => {
    // localStorage.setItem( email.value, JSON.stringify(details))
     //allUser(email,fstname);
 
-//     email.value=""
-//    fstname.value=""
+  
 });
 
 const allUser = (resp)=>{
@@ -84,10 +85,11 @@ const allUser = (resp)=>{
     
    //let  obj =JSON.parse(localStorage.getItem(key.value));
    let  obj = resp; 
+   let cat = obj.category;
  console.log("object in allUser==", obj);
-   let parent = document.getElementById('container');
-    let divTag = document.createElement('div');
-let textNode = document.createTextNode(obj.name+" "+obj.email);
+   let parent = document.getElementById(`${cat}`);
+    let divTag = document.createElement('li');
+let textNode = document.createTextNode(obj.name+"-"+obj.email+" "+obj.category);
 
 var button = document.createElement('input');
 
@@ -96,16 +98,17 @@ button.setAttribute('type', 'button');
 button.setAttribute('value', 'Delete');
 button.setAttribute('onclick',`removeUser(event,'${JSON.stringify(obj)}')`);
 
-var edit = document.createElement('input');
-// Set the attributes for Edit
-edit.setAttribute('type', 'button');
-edit.setAttribute('value', 'Edit');
-edit.setAttribute('onclick',`editUser(event,'${JSON.stringify(obj)}')`);
+
+// var edit = document.createElement('input');
+// // Set the attributes for Edit
+// edit.setAttribute('type', 'button');
+// edit.setAttribute('value', 'Edit');
+// edit.setAttribute('onclick',`editUser(event,'${JSON.stringify(obj)}')`);
 
 
 divTag.appendChild(textNode);
 divTag.appendChild(button)
-divTag.appendChild(edit)
+//divTag.appendChild(edit)
 parent.appendChild(divTag);
 
 }
@@ -118,16 +121,17 @@ const removeUser=(e,obj)=>{
     let parent = e.target.parentNode.parentNode;
     // console.log("child",child);
     // console.log("aprent",parent);
-    parent.removeChild(child);
+   
 
     // remove from local storage
    // localStorage.removeItem(key);
    obj = JSON.parse( obj);
     let id = obj._id;
     console.log("id=====",id,obj.name);
-    axios.delete(`https://crudcrud.com/api/9c781d1f384845de9667ee169cb75739/personData/${id}`)
+    axios.delete(`https://crudcrud.com/api/924559f09938462a960cf37340e57272/personData/${id}`)
     .then((resp)=>{
         console.log("success Delete", resp);
+        parent.removeChild(child);
     }).catch((err)=>{
         console.log("not DELETED");
     })
